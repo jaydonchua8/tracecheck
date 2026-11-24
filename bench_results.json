@@ -1,0 +1,261 @@
+{
+ "synthetic": true,
+ "rules": 13,
+ "rules_sha256": "57c8f159e04bc4fff534b8628de6334a94de6f486b6aa61057d923addba74bd3",
+ "dev_seed": 7,
+ "held_seed": 2027,
+ "dev_clean": {
+  "traces": 5000,
+  "two_referral_traces": 2508,
+  "mean_steps": 17.2,
+  "max_steps": 40,
+  "rules_false_positive": 0,
+  "final_state_false_positive": 0,
+  "unbound_false_positive": 1710,
+  "chat_round_trip_identical": "1000 of 1000",
+  "traces_per_second": 945,
+  "steps_per_second": 16223
+ },
+ "dev_faults": {
+  "skip_eligibility": {
+   "n": 500,
+   "rules": 500,
+   "named": 500,
+   "final": 0,
+   "unbound": 405
+  },
+  "book_before_auth": {
+   "n": 500,
+   "rules": 500,
+   "named": 500,
+   "final": 0,
+   "unbound": 475
+  },
+  "book_after_denial": {
+   "n": 500,
+   "rules": 500,
+   "named": 500,
+   "final": 500,
+   "unbound": 462
+  },
+  "phi_before_verify": {
+   "n": 500,
+   "rules": 500,
+   "named": 500,
+   "final": 0,
+   "unbound": 448
+  },
+  "unconfirmed_slot": {
+   "n": 500,
+   "rules": 500,
+   "named": 500,
+   "final": 0,
+   "unbound": 0
+  },
+  "wrong_patient": {
+   "n": 500,
+   "rules": 500,
+   "named": 500,
+   "final": 448,
+   "unbound": 0
+  },
+  "wrong_specialty": {
+   "n": 500,
+   "rules": 500,
+   "named": 500,
+   "final": 444,
+   "unbound": 0
+  },
+  "duplicate_booking": {
+   "n": 500,
+   "rules": 500,
+   "named": 500,
+   "final": 500,
+   "unbound": 500
+  },
+  "call_storm": {
+   "n": 500,
+   "rules": 500,
+   "named": 500,
+   "final": 0,
+   "unbound": 500
+  },
+  "silent_denial": {
+   "n": 500,
+   "rules": 500,
+   "named": 500,
+   "final": 500,
+   "unbound": 443
+  },
+  "close_without_docs": {
+   "n": 500,
+   "rules": 500,
+   "named": 500,
+   "final": 0,
+   "unbound": 473
+  },
+  "misquoted_time": {
+   "n": 500,
+   "rules": 500,
+   "named": 500,
+   "final": 0,
+   "unbound": 500
+  },
+  "stale_eligibility": {
+   "n": 500,
+   "rules": 500,
+   "named": 500,
+   "final": 0,
+   "unbound": 495
+  },
+  "same_turn_booking": {
+   "n": 500,
+   "rules": 500,
+   "named": 500,
+   "final": 0,
+   "unbound": 392
+  },
+  "lost_booking_result": {
+   "n": 500,
+   "rules": 500,
+   "named": 500,
+   "final": 447,
+   "unbound": 500
+  },
+  "wrong_weekday": {
+   "n": 500,
+   "rules": 0,
+   "named": 0,
+   "final": 0,
+   "unbound": 0
+  }
+ },
+ "dev_total": {
+  "n": 8000,
+  "rules": 7500,
+  "named": 7500,
+  "final": 2839,
+  "unbound": 5593
+ },
+ "held_clean": {
+  "traces": 2000,
+  "referrals_per_trace": 3,
+  "mean_steps": 39.5,
+  "parallel_turns": 6246,
+  "rules_false_positive": 0,
+  "final_state_false_positive": 0
+ },
+ "held_lossy_clean": {
+  "traces": 2000,
+  "drop_rate": 0.02,
+  "with_lost_result": 1063,
+  "flagged": 613,
+  "flagged_with_lost_result": 613,
+  "lost_results": 1552,
+  "by_rule": {
+   "write_result_recorded": 428,
+   "eligibility_before_booking": 80,
+   "message_time_grounded": 101,
+   "verify_before_phi": 93,
+   "patient_matches_referral": 52,
+   "specialty_matches_referral": 52,
+   "auth_before_booking": 29,
+   "eligibility_fresh": 5
+  }
+ },
+ "held_faults": {
+  "inactive_coverage_booked": {
+   "n": 300,
+   "rules": 300,
+   "final": 0,
+   "either": 300,
+   "fired": {
+    "eligibility_before_booking": 300
+   }
+  },
+  "auth_for_other_referral": {
+   "n": 300,
+   "rules": 300,
+   "final": 0,
+   "either": 300,
+   "fired": {
+    "auth_before_booking": 300
+   }
+  },
+  "phi_to_other_patient": {
+   "n": 300,
+   "rules": 300,
+   "final": 0,
+   "either": 300,
+   "fired": {
+    "message_time_grounded": 300,
+    "verify_before_phi": 234
+   }
+  },
+  "old_time_after_reschedule": {
+   "n": 300,
+   "rules": 300,
+   "final": 0,
+   "either": 300,
+   "fired": {
+    "message_time_grounded": 300
+   }
+  },
+  "failed_booking_confirmed": {
+   "n": 300,
+   "rules": 300,
+   "final": 300,
+   "either": 300,
+   "fired": {
+    "message_time_grounded": 300
+   }
+  },
+  "docs_for_other_referral": {
+   "n": 300,
+   "rules": 300,
+   "final": 0,
+   "either": 300,
+   "fired": {
+    "docs_before_close": 300
+   }
+  },
+  "verified_other_patient": {
+   "n": 300,
+   "rules": 300,
+   "final": 0,
+   "either": 300,
+   "fired": {
+    "verify_before_phi": 300
+   }
+  },
+  "booked_after_escalation": {
+   "n": 300,
+   "rules": 34,
+   "final": 300,
+   "either": 300,
+   "fired": {
+    "eligibility_before_booking": 34
+   }
+  },
+  "cancelled_left_scheduled": {
+   "n": 300,
+   "rules": 0,
+   "final": 300,
+   "either": 300,
+   "fired": {}
+  },
+  "auth_submitted_twice": {
+   "n": 300,
+   "rules": 0,
+   "final": 0,
+   "either": 0,
+   "fired": {}
+  }
+ },
+ "held_total": {
+  "n": 3000,
+  "rules": 2134,
+  "final": 900,
+  "either": 2700
+ }
+}

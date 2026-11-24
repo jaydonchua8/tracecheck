@@ -1,0 +1,18 @@
+[
+ {"tool": "get_referral", "args": {"referral_id": "R392"}, "result": {"patient_id": "P392", "specialty": "dermatology", "payer": "aetna", "auth_required": true}, "ts": 1803767255, "turn": 0},
+ {"tool": "check_eligibility", "args": {"patient_id": "P392", "referral_id": "R392", "payer": "aetna"}, "result": {"active": true}, "ts": 1803767340, "turn": 1},
+ {"tool": "submit_auth", "args": {"referral_id": "R392", "payer": "aetna"}, "result": {"auth_id": "AU392"}, "ts": 1803767383, "turn": 2},
+ {"tool": "check_auth", "args": {"referral_id": "R392"}, "result": {"status": "pending"}, "ts": 1803773611, "turn": 3},
+ {"tool": "call_patient", "args": {"patient_id": "P392"}, "result": {"answered": true}, "ts": 1803773644, "turn": 4},
+ {"tool": "verify_identity", "args": {"patient_id": "P392"}, "result": {"verified": true}, "ts": 1803773711, "turn": 5},
+ {"tool": "find_slots", "args": {"specialty": "dermatology"}, "result": {"slots": [{"slot_id": "S392-0", "time": "2027-03-27 16:00"}, {"slot_id": "S392-1", "time": "2027-03-09 16:00"}, {"slot_id": "S392-2", "time": "2027-03-16 10:00"}]}, "ts": 1803773747, "turn": 6},
+ {"tool": "record_confirmation", "args": {"patient_id": "P392", "slot_id": "S392-1"}, "result": {"ok": true}, "ts": 1803773789, "turn": 7},
+ {"tool": "book_appointment", "args": {"referral_id": "R392", "patient_id": "P392", "specialty": "dermatology", "slot_id": "S392-1"}, "result": {"ok": true, "appt_id": "A-S392-1", "time": "2027-03-09 16:00"}, "ts": 1803773791, "turn": 8},
+ {"tool": "check_auth", "args": {"referral_id": "R392"}, "result": {"status": "approved"}, "ts": 1803778718, "turn": 9},
+ {"tool": "send_message", "args": {"patient_id": "P392", "contains_phi": true, "text": "Your dermatology appointment is on 2027-03-09 16:00."}, "result": {"ok": true}, "ts": 1803778765, "turn": 10},
+ {"tool": "update_referral", "args": {"referral_id": "R392", "status": "scheduled"}, "result": {"ok": true}, "ts": 1803778834, "turn": 11},
+ {"tool": "get_referral", "args": {"referral_id": "R754"}, "result": {"patient_id": "P754", "specialty": "cardiology", "payer": "kaiser", "auth_required": false}, "ts": 1803788855, "turn": 12},
+ {"tool": "check_eligibility", "args": {"patient_id": "P754", "referral_id": "R754", "payer": "kaiser"}, "result": {"active": false}, "ts": 1803788928, "turn": 13},
+ {"tool": "escalate_to_staff", "args": {"referral_id": "R754", "reason": "coverage_inactive"}, "result": {"ok": true}, "ts": 1803788980, "turn": 14},
+ {"tool": "update_referral", "args": {"referral_id": "R754", "status": "escalated"}, "result": {"ok": true}, "ts": 1803789031, "turn": 15}
+]

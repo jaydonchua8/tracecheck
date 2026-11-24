@@ -1,0 +1,68 @@
+[
+ {"id": "eligibility_before_booking", "type": "precedes",
+  "desc": "booked without an active eligibility check for this patient",
+  "then": {"tool": "book_appointment", "where": {"args.patient_id": "$patient"}},
+  "need": {"tool": "check_eligibility", "where": {"args.patient_id": "$patient", "result.active": true}}},
+
+ {"id": "auth_before_booking", "type": "precedes",
+  "desc": "booked before the required authorization was approved",
+  "then": {"tool": "book_appointment", "where": {"args.referral_id": "$referral"}},
+  "if_seen": {"tool": "get_referral", "where": {"args.referral_id": "$referral", "result.auth_required": true}},
+  "need": {"tool": "check_auth", "where": {"args.referral_id": "$referral", "result.status": "approved"}}},
+
+ {"id": "verify_before_phi", "type": "precedes",
+  "desc": "sent a message containing PHI before verifying identity",
+  "then": {"tool": "send_message", "where": {"args.patient_id": "$patient", "args.contains_phi": true}},
+  "need": {"tool": "verify_identity", "where": {"args.patient_id": "$patient", "result.verified": true}}},
+
+ {"id": "slot_confirmed", "type": "precedes",
+  "desc": "booked a slot the patient did not confirm",
+  "then": {"tool": "book_appointment", "where": {"args.patient_id": "$patient", "args.slot_id": "$slot"}},
+  "need": {"tool": "record_confirmation", "where": {"args.patient_id": "$patient", "args.slot_id": "$slot"}}},
+
+ {"id": "patient_matches_referral", "type": "precedes",
+  "desc": "booked for a patient who is not the one on the referral",
+  "then": {"tool": "book_appointment", "where": {"args.referral_id": "$referral", "args.patient_id": "$patient"}},
+  "need": {"tool": "get_referral", "where": {"args.referral_id": "$referral", "result.patient_id": "$patient"}}},
+
+ {"id": "specialty_matches_referral", "type": "precedes",
+  "desc": "booked a specialty that is not the one on the referral",
+  "then": {"tool": "book_appointment", "where": {"args.referral_id": "$referral", "args.specialty": "$specialty"}},
+  "need": {"tool": "get_referral", "where": {"args.referral_id": "$referral", "result.specialty": "$specialty"}}},
+
+ {"id": "one_active_booking", "type": "at_most", "n": 1,
+  "desc": "second booking for a referral without cancelling the first",
+  "match": {"tool": "book_appointment", "where": {"args.referral_id": "$referral", "result.ok": true}},
+  "reset": {"tool": "cancel_appointment", "where": {"args.referral_id": "$referral"}}},
+
+ {"id": "max_call_attempts", "type": "at_most", "n": 3,
+  "desc": "more than 3 unanswered calls to one patient",
+  "match": {"tool": "call_patient", "where": {"args.patient_id": "$patient", "result.answered": false}}},
+
+ {"id": "denial_escalated", "type": "responds",
+  "desc": "authorization was denied and nobody was told",
+  "when": {"tool": "check_auth", "where": {"args.referral_id": "$referral", "result.status": "denied"}},
+  "expect": {"tool": "escalate_to_staff", "where": {"args.referral_id": "$referral"}}},
+
+ {"id": "docs_before_close", "type": "precedes",
+  "desc": "closed the referral before the visit documents came back",
+  "then": {"tool": "update_referral", "where": {"args.referral_id": "$referral", "args.status": "closed"}},
+  "need": {"tool": "receive_documents", "where": {"args.referral_id": "$referral"}}},
+
+ {"id": "eligibility_fresh", "type": "precedes", "within": 259200,
+  "desc": "booked on a coverage check more than 72 hours old",
+  "then": {"tool": "book_appointment", "where": {"args.patient_id": "$patient"}},
+  "if_seen": {"tool": "check_eligibility", "where": {"args.patient_id": "$patient", "result.active": true}},
+  "need": {"tool": "check_eligibility", "where": {"args.patient_id": "$patient", "result.active": true}}},
+
+ {"id": "message_time_grounded", "type": "grounded", "latest": true,
+  "desc": "message quotes a time that is not in the patient's current booking",
+  "match": {"tool": "send_message", "where": {"args.patient_id": "$patient"}},
+  "field": "args.text", "extract": "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}",
+  "sources": {"tool": "book_appointment", "where": {"args.patient_id": "$patient", "result.ok": true}}},
+
+ {"id": "write_result_recorded", "type": "never",
+  "desc": "a call that changes something has no recorded result, so its outcome is unknown",
+  "match": {"tool": ["book_appointment", "cancel_appointment", "update_referral", "send_message", "submit_auth"],
+            "where": {"result": {"exists": false}}}}
+]
